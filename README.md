@@ -9,3 +9,5 @@ To reproduce:
 2. Open the todo make a change and save it
 
 You will stay on the edit todo screen but you will see in the console "Building HomeScreen".
+
+One solution is to await the navigation push and refresh the provider once we come back to the screen.

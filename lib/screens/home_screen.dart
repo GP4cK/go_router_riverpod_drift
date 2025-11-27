@@ -8,6 +8,16 @@ import '../providers.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
+  Future<void> _navigateToEdit(
+    BuildContext context,
+    WidgetRef ref,
+    String path,
+  ) async {
+    await context.push(path);
+    // Refresh todos when returning from edit screen
+    ref.read(todosProvider.notifier).refresh();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todosAsync = ref.watch(todosProvider);
@@ -59,9 +69,8 @@ class HomeScreen extends ConsumerWidget {
                     style: const TextStyle(fontSize: 12),
                   ),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () {
-                    context.push('/todo/${todo.id}');
-                  },
+                  onTap: () =>
+                      _navigateToEdit(context, ref, '/todo/${todo.id}'),
                 ),
               );
             },
@@ -71,9 +80,7 @@ class HomeScreen extends ConsumerWidget {
         error: (error, stack) => Center(child: Text('Error: $error')),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push('/todo/new');
-        },
+        onPressed: () => _navigateToEdit(context, ref, '/todo/new'),
         child: const Icon(Icons.add),
       ),
     );
